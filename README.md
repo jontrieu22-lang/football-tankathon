@@ -23,3 +23,7 @@ Open http://localhost:4173. Progress is saved in localStorage on that browser an
 The 12 slots represent starters/units, rather than a full depth chart. Drafting or signing replaces the existing slot. Rivals have aggregate ratings, records, and strategic states, with simulated market signings. Draft tiebreaker is stable league order; standings tiebreaker is point differential. No real multiplayer or NFL assets.
 
 Files: `dist/engine.js` holds game state and rules; `dist/app.js` renders the UI; `dist/style.css` contains responsive styles. Fonts are bundled under their included SIL Open Font Licenses.
+
+## Ownership patience
+
+Positive heat changes are rounded after applying tenure weights: season 1 ×0.4, season 2 ×0.8, season 3+ ×1.0. Win cooling and successful owner reviews are unchanged. Game reports show the grace discount; trades and owner reviews use the same weighting. Existing saves keep accumulated heat and use the new rules on their next action.
