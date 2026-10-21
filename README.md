@@ -12,9 +12,9 @@ Open http://localhost:4173. Progress is saved in localStorage on that browser an
 
 ## Verify
 
-    node test.cjs
+    node scripts/check.cjs
 
-`browser-test.cjs` uses the workspace's installed Playwright and Chromium against port 4173. It covers gameplay controls, local persistence, and mobile overflow.
+`tests/browser/game.test.cjs` uses Playwright and Chromium against port 4173 by default; setup and overrides are documented below. It covers gameplay controls, local persistence, and mobile overflow.
 
 ## MVP rules
 
@@ -22,7 +22,7 @@ Open http://localhost:4173. Progress is saved in localStorage on that browser an
 
 The 12 slots represent starters/units, rather than a full depth chart. Drafting or signing replaces the existing slot. Rivals have aggregate ratings, records, and strategic states, with simulated market signings. Draft tiebreaker is stable league order; standings tiebreaker is point differential. No real multiplayer or NFL assets.
 
-Files: `dist/engine.js` holds game state and rules; `dist/app.js` renders the UI; `dist/style.css` contains responsive styles. Fonts are bundled under their included SIL Open Font Licenses.
+Files: `dist/js/game/engine.js` holds game state and rules; `dist/js/ui/app.js` renders the UI; `dist/styles/` contains responsive styles. Fonts are bundled under their included SIL Open Font Licenses.
 
 ## Ownership patience
 
@@ -48,4 +48,38 @@ Select any unspent pick and exchange it for a pick four places later plus anothe
 
 `vercel.json` serves `dist` as static assets with no install or build step. Link the repository root to Vercel and set `main` as the production branch. Vercel's native Git integration creates preview deployments for non-production branches and publishes main-branch updates. GitHub Actions runs game checks on main pushes and pull requests; the checks report separately and are not a deployment gate by themselves.
 
-For tester feedback: create a feature branch, make changes, run `node test.cjs`, push and open a pull request, review the Vercel preview, then merge to main. Keep the production domain stable so browser-local saves persist. Saves from the old Sites domain do not transfer automatically to the Vercel domain.
+For tester feedback: create a feature branch, make changes, run `node scripts/check.cjs`, push and open a pull request, review the Vercel preview, then merge to main. Keep the production domain stable so browser-local saves persist. Saves from the old Sites domain do not transfer automatically to the Vercel domain.
+
+
+## Source organization
+
+```text
+dist/
+  index.html
+  js/game/engine.js
+  js/ui/app.js
+  js/ui/format.js
+  js/ui/screens/        # office, offseason, roster, market, league, draft, ending
+  js/ui/components/     # hot-seat, game-result, button, layout
+  styles/              # tokens, base, components, screens
+  assets/fonts/        # fonts and licenses
+tests/game/engine.test.cjs
+tests/browser/game.test.cjs
+scripts/check.cjs
+docs/visual-direction.md
+docs/ui-checklist.md
+```
+
+See [visual direction](docs/visual-direction.md) for editing boundaries and the [UI checklist](docs/ui-checklist.md) for review expectations. There is no production build step; Vercel continues to serve `dist/`.
+
+### Browser checks
+
+With a static server on port 4173, install the optional browser-test tooling locally:
+
+```sh
+npm install --no-save --package-lock=false playwright@1.56.1
+npx playwright install chromium
+node tests/browser/game.test.cjs
+```
+
+`BASE_URL` overrides the local URL. `PLAYWRIGHT_MODULE` can point to an existing Playwright installation, `CHROMIUM_PATH` selects a system Chromium, and `SCREENSHOT_DIR` selects a screenshot directory (default: ignored `test-results/`). These tools are not runtime dependencies. No absolute workspace paths are required.

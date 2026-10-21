@@ -1,1 +1,71 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>HOT SEAT — A football rebuild roguelike</title><link rel="stylesheet" href="style.css"></head><body><div id="app"></div><dialog id="help"><h2>Lose with a purpose.<br>Win before you're fired.</h2><p>Build the Rust City Hounds into champions in as few seasons as possible. Every season opens in the offseason: trade, complete your draft, and sign free agents, then choose Start season. Your first tenure begins with the #3 pick. Ten regular-season games and a postseason follow.</p><p><b>Every week:</b> choose a game plan, optionally train or sign players, then simulate. Develop youth sacrifices 4 team rating for faster growth. Win now adds 3 rating but slows development.</p><p><b>The tradeoff:</b> losses improve draft position; wins cool your seat and add $2M to next year's budget. Close losses and young-player progress soften the heat. Blowouts hurt morale and fan confidence.</p><p><b>Money:</b> annual funding starts at $80M, plus performance and fan bonuses. Annual salaries are deducted at the start of the offseason. $3M per remaining draft selection is reserved for rookies. Signings replace your player in that position. Training costs $3M, with two slots per week.</p><p><b>Survival:</b> heat of 100 means fired. Ownership gives you a ramp: scrutiny rises smoothly with each regular-season game, from 20% at your first game to 55% halfway through year one, 80% entering year two, 95% halfway through year two, and 100% entering year three. This covers losses, trades, and negative owner reviews. Wins and successful reviews cool the seat normally. Ownership also expects more wins each year. The top six teams enter the playoffs. Win the final to complete your run.</p><p>Your run saves automatically in this browser. Fictional teams, simulated AI rivals, no account required.</p><button onclick="document.querySelector('#help').close()">Back to the front office →</button></dialog><script src="engine.js"></script><script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>HOT SEAT — A football rebuild roguelike</title>
+    <link rel="stylesheet" href="styles/tokens.css" />
+    <link rel="stylesheet" href="styles/base.css" />
+    <link rel="stylesheet" href="styles/components.css" />
+    <link rel="stylesheet" href="styles/screens.css" />
+  </head>
+  <body>
+    <div id="app"></div>
+    <dialog id="help">
+      <h2>Lose with a purpose.<br />Win before you're fired.</h2>
+      <p>
+        Build the Rust City Hounds into champions in as few seasons as possible.
+        Every season opens in the offseason: trade, complete your draft, and
+        sign free agents, then choose Start season. Your first tenure begins
+        with the #3 pick. Ten regular-season games and a postseason follow.
+      </p>
+      <p>
+        <b>Every week:</b> choose a game plan, optionally train or sign players,
+        then simulate. Develop youth sacrifices 4 team rating for faster growth.
+        Win now adds 3 rating but slows development.
+      </p>
+      <p>
+        <b>The tradeoff:</b> losses improve draft position; wins cool your seat
+        and add $2M to next year's budget. Close losses and young-player
+        progress soften the heat. Blowouts hurt morale and fan confidence.
+      </p>
+      <p>
+        <b>Money:</b> annual funding starts at $80M, plus performance and fan
+        bonuses. Annual salaries are deducted at the start of the offseason. $3M
+        per remaining draft selection is reserved for rookies. Signings replace
+        your player in that position. Training costs $3M, with two slots per
+        week.
+      </p>
+      <p>
+        <b>Survival:</b> heat of 100 means fired. Ownership gives you a ramp:
+        scrutiny rises smoothly with each regular-season game, from 20% at your
+        first game to 55% halfway through year one, 80% entering year two, 95%
+        halfway through year two, and 100% entering year three. This covers
+        losses, trades, and negative owner reviews. Wins and successful reviews
+        cool the seat normally. Ownership also expects more wins each year. The
+        top six teams enter the playoffs. Win the final to complete your run.
+      </p>
+      <p>
+        Your run saves automatically in this browser. Fictional teams, simulated
+        AI rivals, no account required.
+      </p>
+      <button onclick="document.querySelector('#help').close()">
+        Back to the front office →
+      </button>
+    </dialog>
+    <script src="js/game/engine.js"></script>
+    <script src="js/ui/format.js"></script>
+    <script src="js/ui/components/hot-seat.js"></script>
+    <script src="js/ui/components/button.js"></script>
+    <script src="js/ui/components/layout.js"></script>
+    <script src="js/ui/screens/offseason.js"></script>
+    <script src="js/ui/screens/office.js"></script>
+    <script src="js/ui/components/game-result.js"></script>
+    <script src="js/ui/screens/roster.js"></script>
+    <script src="js/ui/screens/market.js"></script>
+    <script src="js/ui/screens/league.js"></script>
+    <script src="js/ui/screens/draft.js"></script>
+    <script src="js/ui/screens/ending.js"></script>
+    <script src="js/ui/app.js"></script>
+  </body>
+</html>

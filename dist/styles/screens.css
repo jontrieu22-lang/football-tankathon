@@ -1,0 +1,267 @@
+@media (min-width: 1450px) {
+  main {
+    padding-top: 48px;
+  }
+  .title-row {
+    margin-bottom: 35px;
+  }
+}
+@media (max-width: 1000px) {
+  main {
+    padding: 28px 24px;
+  }
+  .layout {
+    grid-template-columns: minmax(0, 1fr) 245px;
+  }
+  .panel {
+    padding: 18px;
+  }
+  .edition {
+    display: none;
+  }
+  .plans {
+    gap: 6px;
+  }
+  .plan {
+    padding: 12px 9px;
+  }
+  .plan b {
+    font-size: 19px;
+  }
+  .player-actions {
+    flex-direction: column;
+  }
+  .match-note span {
+    display: block;
+    float: none;
+    margin-top: 7px;
+  }
+}
+@media (max-width: 760px) {
+  header {
+    padding: 0 20px;
+    height: 70px;
+  }
+  .brand {
+    font-size: 24px;
+  }
+  .saved {
+    display: none;
+  }
+  .header-actions {
+    gap: 5px;
+  }
+  .header-actions button {
+    padding: 8px;
+    font-size: 10px;
+  }
+  main {
+    padding: 25px 16px;
+  }
+  .title-row {
+    align-items: flex-start;
+  }
+  h1 {
+    font-size: 40px;
+  }
+  .title-row p {
+    font-size: 11px;
+    max-width: 230px;
+  }
+  .season {
+    font-size: 8px;
+    gap: 2px 5px;
+  }
+  .season b {
+    font-size: 38px;
+  }
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .stats > div {
+    padding: 16px;
+  }
+  .stats > div:nth-child(2) {
+    border-right: 0;
+  }
+  .stats > div:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--line);
+  }
+  .stats strong {
+    font-size: 33px;
+  }
+  nav {
+    gap: 20px;
+    overflow: auto;
+    white-space: nowrap;
+  }
+  nav button {
+    font-size: 11px;
+  }
+  .layout {
+    display: flex;
+    flex-direction: column;
+  }
+  .layout > section {
+    min-width: 0;
+  }
+  aside {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .seat svg {
+    height: 130px;
+  }
+  .panel-label {
+    font-size: 9px;
+    letter-spacing: 1px;
+  }
+  .panel-label > span {
+    font-size: 8px;
+  }
+  .plans {
+    gap: 7px;
+  }
+  .plan b {
+    font-size: 20px;
+  }
+  .plan small {
+    font-size: 9px;
+  }
+  .action-row button {
+    min-width: 155px;
+    padding: 12px;
+  }
+  .action-row small {
+    font-size: 9px;
+  }
+  .player {
+    gap: 8px;
+  }
+  .player-name small {
+    font-size: 8px;
+  }
+  .player-name b {
+    font-size: 11px;
+  }
+  .position {
+    width: 35px;
+  }
+  .rating {
+    font-size: 24px;
+    margin-right: 0;
+  }
+  .player button {
+    font-size: 9px;
+    padding: 8px;
+  }
+  .player-actions {
+    gap: 4px;
+  }
+  footer {
+    font-size: 8px;
+    gap: 20px;
+    line-height: 1.7;
+  }
+  .result-line {
+    gap: 15px;
+  }
+  .result-line h3 {
+    font-size: 20px;
+  }
+  .pulse {
+    padding: 15px;
+  }
+  .seat {
+    padding: 15px;
+  }
+  .seat .panel-label {
+    flex-wrap: wrap;
+  }
+  .seat .pill {
+    padding: 4px 6px;
+  }
+  h2 {
+    font-size: 34px;
+  }
+}
+.offseason h2 {
+  font-size: 48px;
+}
+.offseason .plan button {
+  margin-top: 16px;
+  width: 100%;
+  font-size: 11px;
+  padding: 10px 7px;
+}
+.offseason .plan small {
+  min-height: 52px;
+}
+.offseason .plan {
+  cursor: default;
+}
+.offseason .action-row {
+  border-top: 1px solid var(--line);
+  padding-top: 20px;
+}
+@media (max-width: 760px) {
+  .offseason .plans {
+    grid-template-columns: 1fr;
+  }
+  .offseason .plan small {
+    min-height: 0;
+  }
+  .offseason .plan b {
+    margin-top: 8px;
+  }
+  .offseason h2 {
+    font-size: 38px;
+  }
+}
+.draft-board .board-position {
+  display: block;
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-size: 9px;
+}
+.board-status {
+  font-size: 10px;
+  color: var(--muted);
+}
+.draft-board .on-clock {
+  background: #293528;
+}
+.draft-board table button {
+  font-size: 10px;
+  padding: 8px 12px;
+}
+.draft-board table {
+  min-width: 570px;
+}
+.draft-board .action-row {
+  margin-bottom: 20px;
+}
+.trade-picker {
+  margin: 20px 0;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+.trade-picker label {
+  display: block;
+  margin-bottom: 10px;
+}
+.trade-picker select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 5px;
+  background: #222d2b;
+  color: var(--text);
+  border: 1px solid #6a7c56;
+  font: inherit;
+}
+.trade-picker p {
+  font-size: 12px;
+  margin-bottom: 0;
+}
