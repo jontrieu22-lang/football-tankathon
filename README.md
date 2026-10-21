@@ -43,3 +43,9 @@ The Draft board tab shows all 44 prospects before and during the draft, with ran
 ## Trade down
 
 Select any unspent pick and exchange it for a pick four places later plus another selection sixteen places after that (skip slots you already own). The offer previews the prospects you lose access to. No cash fee, but $3M of unreserved budget is required for the additional rookie contract. There is no trade-count limit. Select any unspent pick, including acquired picks, in the draft board selector. Offers work in the offseason and during the draft and survive reloads. Rival pick ownership prevents duplicate assets; the current draft floor prevents trading for already-passed picks. Trading up costs $6M per position moved. Trading down requires two later picks held by the same rival and enough remaining prospects to fill the resulting selections.
+
+## GitHub and Vercel releases
+
+`vercel.json` serves `dist` as static assets with no install or build step. Link the repository root to Vercel and set `main` as the production branch. Vercel's native Git integration creates preview deployments for non-production branches and publishes main-branch updates. GitHub Actions runs game checks on main pushes and pull requests; the checks report separately and are not a deployment gate by themselves.
+
+For tester feedback: create a feature branch, make changes, run `node test.cjs`, push and open a pull request, review the Vercel preview, then merge to main. Keep the production domain stable so browser-local saves persist. Saves from the old Sites domain do not transfer automatically to the Vercel domain.
