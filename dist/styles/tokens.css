@@ -1,0 +1,21 @@
+@font-face {
+  font-family: "Barlow Condensed";
+  src: url("../assets/fonts/heading.ttf");
+  font-weight: 500 800;
+  font-display: swap;
+}
+@font-face {
+  font-family: "DM Sans";
+  src: url("../assets/fonts/body.ttf");
+  font-weight: 100 900;
+  font-display: swap;
+}
+:root {
+  --bg: #101717;
+  --panel: #192222;
+  --line: #303b39;
+  --text: #edece2;
+  --muted: #92a09a;
+  --lime: #d8ee88;
+  --orange: #f29a60;
+}

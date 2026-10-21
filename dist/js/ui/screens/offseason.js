@@ -1,0 +1,9 @@
+function offseason(s) {
+  return `<div class="panel offseason"><div class="eyebrow">SEASON ${s.season} · OFFSEASON</div><h2>Build before kickoff.</h2><p>${s.season === 1 ? "You inherited a struggling roster and the #3 pick. Give your first season a fighting chance." : "A new budget. A fresh draft class. Your next chance to build a champion."}</p><div class="plans"><div class="plan"><span>01</span><b>Make your moves</b><small>Trade a veteran for $5M and a pick. Before drafting, that selection joins this year's class.</small>${button("Manage roster →", "tab:roster")}</div><div class="plan"><span>02</span><b>${s.draftComplete ? "Class secured" : "Draft your core"}</b><small>${s.draftComplete ? "Your rookies are signed. You can still trade and sign free agents." : `Pick #${s.pick} · ${s.draftSlots.length} selections. ${money(Game.rookieReserve(s))} reserved for rookie contracts.`}</small>${button("Scout full board →", "tab:board")}${button(s.draftComplete ? "Draft complete ✓" : "Enter draft →", "startDraft", s.draftComplete)}</div><div class="plan"><span>03</span><b>Fill the gaps</b><small>${money(Game.spendable(s))} available after rookie reserves. Sign free agents before or after the draft.</small>${button("Free agents →", "tab:market")}</div></div><div class="action-row"><small>${s.draftComplete ? "Ready when you are. Starting the season does not simulate a game." : "Complete your draft to unlock kickoff. Trades and free agency are optional."}</small>${button("Start season →", "startSeason", !s.draftComplete, "primary")}</div></div><div class="panel wire"><div class="panel-label">FRONT OFFICE ACTIVITY</div>${
+    s.log
+      .slice(0, 5)
+      .map((l) => `<p><span>+</span>${l}</p>`)
+      .join("") ||
+    "<p>Your first game can wait. Put your roster together first.</p>"
+  }</div>`;
+}

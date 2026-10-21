@@ -13,7 +13,4 @@ jobs:
         with:
           persist-credentials: false
       - name: Validate JavaScript and game simulations
-        run: |
-          node --check dist/engine.js
-          node --check dist/app.js
-          node test.cjs
+        run: node scripts/check.cjs

@@ -1,0 +1,3 @@
+function ending(s) {
+  return `<div class="panel ending"><div class="eyebrow">RUN COMPLETE</div><div class="trophy">${s.phase === "champion" ? "🏆" : "🔥"}</div><h2>${s.phase === "champion" ? "From the bottom.<br>To the very top." : "The seat got too hot."}</h2><p>${s.phase === "champion" ? `You won the championship in ${s.season} season${s.season > 1 ? "s" : ""}.` : `Ownership ended your tenure in season ${s.season}, after ${s.week} games. Rebuild, learn, run it back.`}</p><div class="end-stats"><span><b>${s.season}</b>SEASONS</span><span><b>${round(Game.units(s).overall)}</b>FINAL OVR</span><span><b>${s.history.reduce((a, h) => a + h.w, 0) + s.teams[0].w}</b>CAREER WINS</span></div>${button("Start a new tenure →", "reset", false, "primary")}</div>${resultView(s)}`;
+}
