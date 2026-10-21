@@ -26,4 +26,4 @@ Files: `dist/engine.js` holds game state and rules; `dist/app.js` renders the UI
 
 ## Ownership patience
 
-Positive heat changes are rounded after applying tenure weights: season 1 ×0.4, season 2 ×0.8, season 3+ ×1.0. Win cooling and successful owner reviews are unchanged. Game reports show the grace discount; trades and owner reviews use the same weighting. Existing saves keep accumulated heat and use the new rules on their next action.
+Positive heat changes use scrutiny = 1 − 0.8 × max(0, 1 − tenure / 2)², where tenure = season − 1 + completed regular-season games / 10. This rises smoothly from 20% to 80% entering year two and 100% entering year three. Heat changes are rounded to one decimal place. Offseason reviews use all ten completed games, so scrutiny does not jump at a season boundary. Win cooling and successful owner reviews are unchanged. Game reports show the grace discount; trades and owner reviews use the same weighting. Existing saves keep accumulated heat and use the new rules on their next action.
