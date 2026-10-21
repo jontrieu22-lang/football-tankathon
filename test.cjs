@@ -50,3 +50,11 @@ s=G.fresh(63);assert.equal(s.draftBoard.length,44);assert.equal(s.draftBoard[0].
 s=G.fresh(64);assert(G.startDraft(s));cash=s.cash;G.draft(s,1);assert.equal(s.cash,cash);assert.equal(s.draftTurn,0);G.draft(s,44);assert.equal(s.draftedRanks[0],44);
 s=G.fresh(65);delete s.draftBoard;delete s.draftedRanks;let available=JSON.stringify(s.prospects),rng=s.seed;G.migrate(s);assert.equal(s.draftBoard.length,44);assert.equal(JSON.stringify(s.prospects),available);assert.equal(s.seed,rng);board=JSON.stringify(s.draftBoard);G.migrate(s);assert.equal(JSON.stringify(s.draftBoard),board);
 console.log('PASS: all 44 prospects visible, stable trade-up targets, eligibility, taken/drafted statuses, old-save migration');
+// Trade down exchanges real draft slots, preserves prospects, and funds the additional rookie.
+s=G.fresh(80);const offer=G.tradeDownOffer(s);assert.deepEqual(offer,{from:3,later:7,extra:23,reserve:3});board=JSON.stringify(s.draftBoard);cash=s.cash;assert(G.moveDown(s));assert.equal(s.cash,cash);assert.deepEqual(s.draftSlots,[7,19,23]);assert.equal(G.rookieReserve(s),9);assert.equal(s.pick,7);assert.equal(JSON.stringify(s.draftBoard),board);assert(!G.moveDown(s));assert(!G.moveUp(s));s=G.migrate(JSON.parse(JSON.stringify(s)));assert(s.movedDown);assert.equal(G.tradeDownOffer(s),null);finishDraft(s);assert.equal(s.draftedRanks.length,3);assert.equal(s.cash,cash-9);assert.equal(s.phase,'offseason');
+s=G.fresh(81);s.cash=8;assert(!G.moveDown(s));assert.equal(s.pick,3);s.cash=9;G.startDraft(s);assert(G.moveDown(s));finishDraft(s);assert.equal(s.cash,0);
+s=G.fresh(82);G.startDraft(s);G.draft(s,3);assert.equal(G.tradeDownOffer(s),null);assert(!G.moveDown(s));
+s=G.fresh(83);G.moveUp(s);assert(!G.moveDown(s));
+s=G.fresh(84);s.draftSlots.push(23);assert.equal(G.tradeDownOffer(s).extra,24);assert(G.moveDown(s));assert.equal(new Set(s.draftSlots).size,s.draftSlots.length);
+s=regularFresh(85);s.movedDown=true;s.phase='review';s.week=10;s.heat=0;s.teams[0].w=5;G.review(s);assert(!s.movedDown);assert(G.tradeDownOffer(s));
+console.log('PASS: trade-down slots, extra selection, reserve protection, persistence, no repeat/reversal, next-year reset');

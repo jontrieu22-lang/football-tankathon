@@ -39,3 +39,7 @@ Existing saves retain progress. In-progress seasons finish normally. Older pendi
 ## Full draft board
 
 The Draft board tab shows all 44 prospects before and during the draft, with rank, position, overall, potential, current starter comparison, and availability. Trade up before entering the draft or before your first selection; the offer names the exact existing prospects it unlocks. Selecting players never removes them from the full board, while the selectable pool still shrinks as rivals pick between your selections. All remaining prospects can be selected, rather than only the first ten. Older saves retain their available prospects; missing historical ranks are filled once on migration without changing gameplay RNG.
+
+## Trade down
+
+Before your first selection, exchange your first pick for a pick four places later plus another selection sixteen places after that (skip slots you already own). The offer previews the prospects you lose access to. No cash fee, but $3M of unreserved budget is required for the additional rookie contract. Choose one pick-position trade per draft: up or down. Offers work in the offseason and on the first draft turn, survive reloads, and reset for the next class.
