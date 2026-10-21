@@ -27,3 +27,11 @@ Files: `dist/engine.js` holds game state and rules; `dist/app.js` renders the UI
 ## Ownership patience
 
 Positive heat changes use scrutiny = 1 − 0.8 × max(0, 1 − tenure / 2)², where tenure = season − 1 + completed regular-season games / 10. This rises smoothly from 20% to 80% entering year two and 100% entering year three. Heat changes are rounded to one decimal place. Offseason reviews use all ten completed games, so scrutiny does not jump at a season boundary. Win cooling and successful owner reviews are unchanged. Game reports show the grace discount; trades and owner reviews use the same weighting. Existing saves keep accumulated heat and use the new rules on their next action.
+
+## Offseason-first season flow
+
+New runs open in the season-one offseason with pick #3. Trades and free agency are available before or after drafting. Complete the draft, then explicitly choose Start season; kickoff itself does not simulate a game. Following owner review, the next season budget is granted, contracts age, and earned picks are preserved before standings reset. The new draft then happens within that upcoming season, so newly drafted rookies do not immediately age or lose a contract year.
+
+First-year rookie salaries ($3M per selection) are reserved from discretionary spending and charged at selection. There is one veteran trade per season: before drafting its extra selection joins the current class, afterward it belongs to the next offseason. Training has two offseason slots and resets for Week 1.
+
+Existing saves retain progress. In-progress seasons finish normally. Older pending drafts finish before entering the next offseason with that draft marked complete. Existing week-zero seasons open the offseason; an already-funded/finished draft is not duplicated. A year-one save with enough unspent rookie funds gets the new initial draft; otherwise its prior spending is preserved and drafting begins next offseason.
