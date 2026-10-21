@@ -11,8 +11,8 @@ function scrutiny(s){const tenure=(s.season-1)+clamp(s.week,0,10)/10;return 1-.8
 function weightedHeat(s,change){return change>0?Math.round(change*scrutiny(s)*10)/10:change;}
 function fresh(seed=Date.now()){let s={version:1,seed:seed>>>0,season:1,week:0,phase:'offseason',flowVersion:2,heat:24,morale:65,fans:54,cash:32,budget:80,plan:'balanced',trained:[],log:[],history:[],result:null,bonus:0,extraPick:0};s.roster=positions.map((_,i)=>player(s,i,[62,58,66,53,49,55,64,51,58,50,56,48][i]));s.cash=s.budget-s.roster.reduce((n,p)=>n+p.salary,0);s.teams=cities.map((name,i)=>({id:i,name,w:0,l:0,pf:0,pa:0,rating:i===0?57:i<6?54+i:66+(i%5)*4,mode:i<6?'Rebuilding':i<10?'Competing':'Contending',heat:20+i*2}));schedule(s);market(s);prepareDraft(s,3);return s;}
 function prepareDraft(s,pick,extra=0){
- s.pick=pick;s.draftSlots=[pick,16+pick];if(extra)s.draftSlots.push(30);s.draftSlots.sort((a,b)=>a-b);
- s.draftTurn=0;s.draftComplete=false;s.movedUp=false;s.movedDown=false;
+ s.pick=pick;s.draftSlots=[pick,16+pick];if(extra){let rank=30;while(s.draftSlots.includes(rank))rank++;s.draftSlots.push(rank);}s.draftSlots.sort((a,b)=>a-b);
+ s.pickOwners=null;s.draftFloor=1;s.draftTurn=0;s.draftComplete=false;s.movedUp=false;s.movedDown=false;
  s.prospects=Array.from({length:44},(_,i)=>({...player(s,i%12,Math.max(48,83-Math.floor(i*.65))+Math.floor(rng(s)*4),true),rank:i+1}));
  s.draftBoard=s.prospects.map(p=>({...p}));s.draftedRanks=[];s.prospects=s.prospects.filter(p=>p.rank>=pick);
 }
@@ -52,26 +52,58 @@ function play(s){if(s.phase!=='regular')return;const u=units(s),boost=s.plan==='
 s.week++;s.trained=[];s.teams[0].rating=units(s).overall;if(s.week%3===0&&s.market.length){let signed=s.market.splice(Math.floor(rng(s)*s.market.length),1)[0],t=s.teams[1+Math.floor(rng(s)*15)];t.rating+=1;s.log.unshift(`${t.name} signed ${signed.name} (${signed.pos}).`);}if(s.heat>=100){s.phase='fired';return;}if(s.week===10){let rank=standings(s).findIndex(t=>t.id===0);s.phase=rank<6?'playoffs':'review';s.playoffRound=0;s.log.unshift(rank<6?'Playoff berth secured. Three wins from a title.':'Season complete. Your rebuild goes to ownership review.');}}
 function train(s,i){let p=s.roster[i];if(!canManage(s)||spendable(s)<3||s.trained.length>=2||s.trained.includes(i)||p.rating>=p.potential)return false;s.cash-=3;p.rating=Math.min(p.potential,p.rating+2);s.trained.push(i);return true;}
 function sign(s,id){let j=s.market.findIndex(p=>p.id===id);if(j<0||!canManage(s))return false;let p=s.market[j],i=positions.indexOf(p.pos);if(spendable(s)<p.salary)return false;s.cash-=p.salary;s.roster[i]={...p};s.market.splice(j,1);s.log.unshift(`Signed ${p.name}: $${p.salary}M per season, 2 years.`);return true;}
-function trade(s,i){if(!['offseason','regular'].includes(s.phase)||s.week>=6||s.tradedThisSeason)return false;let p=s.roster[i];if(p.rating<60)return false;s.cash+=5;s.tradedThisSeason=true;if(s.phase==='offseason'&&!s.draftComplete){s.draftSlots.push(30);s.draftSlots.sort((a,b)=>a-b);}else s.extraPick=1;s.roster[i]=player(s,i,43,true);s.roster[i].name='Practice squad';let tradeHeat=weightedHeat(s,5);s.heat=clamp(Math.round((s.heat+tradeHeat)*10)/10,0,100);s.log.unshift(`Traded ${p.name} for $5M and an extra draft selection. Heat +${tradeHeat} (year ${s.season} scrutiny).`);if(s.heat>=100)s.phase='fired';return true;}
+function trade(s,i){if(!['offseason','regular'].includes(s.phase)||s.week>=6||s.tradedThisSeason)return false;let p=s.roster[i];if(p.rating<60)return false;s.cash+=5;s.tradedThisSeason=true;if(s.phase==='offseason'&&!s.draftComplete){let rank=30;const owners=pickOwners(s);while(rank<=44&&owners[rank]===0)rank++;if(rank<=44){s.draftSlots.push(rank);owners[rank]=0;s.draftSlots.sort((a,b)=>a-b);}else s.extraPick=1;}else s.extraPick=1;s.roster[i]=player(s,i,43,true);s.roster[i].name='Practice squad';let tradeHeat=weightedHeat(s,5);s.heat=clamp(Math.round((s.heat+tradeHeat)*10)/10,0,100);s.log.unshift(`Traded ${p.name} for $5M and an extra draft selection. Heat +${tradeHeat} (year ${s.season} scrutiny).`);if(s.heat>=100)s.phase='fired';return true;}
 function playoffs(s){if(s.phase!=='playoffs')return;let opponents=standings(s).filter(t=>t.id!==0).slice(0,5),opp=opponents[Math.max(0,4-s.playoffRound*2)],u=units(s),r=match(s,{off:u.off+3,def:u.def+3},{off:opp.rating,def:opp.rating});s.result={us:r.x,them:r.y,opp:opp.name,win:r.x>r.y,quarters:r.quarters,reasons:[],headline:r.x>r.y?'The dream is alive.':'The postseason ends here.'};if(r.x>r.y){s.bonus+=5;s.heat=Math.max(0,s.heat-10);s.playoffRound++;if(s.playoffRound===3)s.phase='champion';}else s.phase='review';}
 function review(s){if(s.phase!=='review')return;let t=s.teams[0],expect=Math.min(6,s.season+1),rawPenalty=t.w<expect?(expect-t.w)*5:-8,penalty=weightedHeat(s,rawPenalty);s.heat=clamp(Math.round((s.heat+penalty)*10)/10,0,100);s.log.unshift(`Owner review: ${t.w}/${expect} expected wins. Heat ${penalty>=0?'+':''}${penalty}${penalty<rawPenalty?` (year ${s.season} grace: ${Math.round((rawPenalty-penalty)*10)/10} heat waived)`:""}.`);if(s.heat>=100){s.phase='fired';return;}nextSeason(s);}
 
-function tradeDownOffer(s){
- if(!['offseason','draft'].includes(s.phase)||s.draftComplete||s.draftTurn!==0||s.movedUp||s.movedDown)return null;
- let later=s.pick+4;while(s.draftSlots.includes(later))later++;
- let extra=later+16;while(s.draftSlots.includes(extra))extra++;
- if(extra>44)return null;
- return {from:s.pick,later,extra,reserve:3};
+function pickOwners(s){
+ if(!s.pickOwners){s.pickOwners={};for(let rank=1;rank<=44;rank++)s.pickOwners[rank]=((rank-1)%16)||1;for(const rank of s.draftSlots)s.pickOwners[rank]=0;}
+ return s.pickOwners;
 }
-function moveDown(s){
- const offer=tradeDownOffer(s);if(!offer||spendable(s)<offer.reserve)return false;
- ensureBoard(s);s.pick=offer.later;s.draftSlots[0]=offer.later;s.draftSlots.push(offer.extra);s.draftSlots.sort((a,b)=>a-b);s.movedDown=true;
- s.prospects=s.draftBoard.filter(p=>p.rank>=s.pick).map(p=>({...p}));
- s.log.unshift(`Traded pick #${offer.from} for #${offer.later} and #${offer.extra}. An extra rookie contract reserves $3M.`);return true;
+function remainingPicks(s){return s.draftSlots.slice(s.draftTurn);}
+function tradeFloor(s){return s.draftTurn>0?Math.max(s.draftFloor||1,s.draftSlots[s.draftTurn]||45):1;}
+function canTradePick(s,from){return ['offseason','draft'].includes(s.phase)&&!s.draftComplete&&remainingPicks(s).includes(from)&&from>=tradeFloor(s);}
+function viableSlots(s,slots,exclude=null){
+ const board=s.draftBoard||s.prospects,remaining=board.filter(p=>p.rank!==exclude&&!(s.draftedRanks||[]).includes(p.rank));
+ const ordered=[...slots].sort((a,b)=>a-b);return ordered.every((slot,i)=>remaining.filter(p=>p.rank>=slot).length>=ordered.length-i);
 }
-function moveUp(s){if(!['offseason','draft'].includes(s.phase)||s.draftComplete||s.draftTurn!==0||s.pick<3||spendable(s)<12||s.movedUp||s.movedDown)return false;ensureBoard(s);s.cash-=12;s.pick-=2;s.draftSlots[0]=s.pick;s.movedUp=true;s.prospects=s.draftBoard.filter(p=>p.rank>=s.pick).map(p=>({...p}));return true;}
+function canDraft(s,rank){return s.phase==='draft'&&s.prospects.some(p=>p.rank===rank)&&viableSlots(s,s.draftSlots.slice(s.draftTurn+1),rank);}
+function tradeUpOffer(s,from=s.draftSlots[s.draftTurn]){
+ if(!canTradePick(s,from))return null;
+ const owners=pickOwners(s);let target=Math.max(1,from-2);
+ while(target>=tradeFloor(s)&&owners[target]===0)target--;
+ if(target<tradeFloor(s)||target>=from)return null;
+ return {from,target,cost:6*(from-target),partner:owners[target]};
+}
+function tradeDownOffer(s,from=s.draftSlots[s.draftTurn]){
+ if(!canTradePick(s,from))return null;
+ const owners=pickOwners(s);
+ for(let later=from+4;later<=43;later++){
+  const partner=owners[later];if(!partner)continue;
+  for(let extra=later+16;extra<=44;extra++)if(owners[extra]===partner&&viableSlots(s,[...remainingPicks(s).filter(n=>n!==from),later,extra]))return {from,later,extra,reserve:3,partner};
+ }
+ return null;
+}
+function syncDraftPicks(s){
+ const used=s.draftSlots.slice(0,s.draftTurn),future=s.draftSlots.slice(s.draftTurn).sort((a,b)=>a-b);
+ s.draftSlots=[...used,...future];s.pick=future[0]||used[0];
+ if(s.draftTurn>0)s.draftFloor=Math.max(s.draftFloor||1,s.pick);
+ ensureBoard(s);s.prospects=s.draftBoard.filter(p=>p.rank>=s.pick&&p.rank>=tradeFloor(s)&&!(s.draftedRanks||[]).includes(p.rank)).map(p=>({...p}));
+}
+function moveDown(s,from=s.draftSlots[s.draftTurn]){
+ const offer=tradeDownOffer(s,from);if(!offer||spendable(s)<offer.reserve)return false;
+ const owners=pickOwners(s);owners[from]=offer.partner;owners[offer.later]=owners[offer.extra]=0;
+ s.draftSlots[s.draftSlots.indexOf(from,s.draftTurn)]=offer.later;s.draftSlots.push(offer.extra);syncDraftPicks(s);
+ s.log.unshift(`Traded #${from} to ${s.teams[offer.partner].name} for #${offer.later} and #${offer.extra}. Extra rookie reserve: $3M.`);return true;
+}
+function moveUp(s,from=s.draftSlots[s.draftTurn]){
+ const offer=tradeUpOffer(s,from);if(!offer||spendable(s)<offer.cost)return false;
+ const owners=pickOwners(s);owners[from]=offer.partner;owners[offer.target]=0;s.cash-=offer.cost;
+ s.draftSlots[s.draftSlots.indexOf(from,s.draftTurn)]=offer.target;syncDraftPicks(s);
+ s.log.unshift(`Traded #${from} and $${offer.cost}M to ${s.teams[offer.partner].name} for #${offer.target}.`);return true;
+}
 
-function draft(s,rank){if(s.phase!=='draft')return;let p=s.prospects.find(p=>p.rank===rank);if(!p||(!s.legacyDraft&&s.cash<3))return;if(!s.legacyDraft)s.cash-=3;s.roster[positions.indexOf(p.pos)]={...p};(s.draftedRanks||=[]).push(rank);s.log.unshift(`Drafted ${p.name}, ${p.pos}, ${Math.round(p.rating)} OVR.`);s.prospects=s.prospects.filter(p=>p.rank!==rank);s.draftTurn++;if(s.draftTurn<s.draftSlots.length){s.prospects=s.prospects.filter(p=>p.rank>=s.draftSlots[s.draftTurn]);}else if(s.legacyDraft){s.legacyDraft=false;nextSeason(s,true);}else{s.draftComplete=true;s.phase='offseason';s.log.unshift('Draft complete. Finish your roster moves, then start the season.');}}
+function draft(s,rank){if(!canDraft(s,rank))return;let p=s.prospects.find(p=>p.rank===rank);if(!p||(!s.legacyDraft&&s.cash<3))return;if(!s.legacyDraft)s.cash-=3;s.roster[positions.indexOf(p.pos)]={...p};(s.draftedRanks||=[]).push(rank);s.log.unshift(`Drafted ${p.name}, ${p.pos}, ${Math.round(p.rating)} OVR.`);s.prospects=s.prospects.filter(p=>p.rank!==rank);s.draftTurn++;if(s.draftTurn<s.draftSlots.length){s.draftFloor=s.draftSlots[s.draftTurn];s.prospects=s.prospects.filter(p=>p.rank>=s.draftFloor);}else if(s.legacyDraft){s.legacyDraft=false;nextSeason(s,true);}else{s.draftComplete=true;s.phase='offseason';s.log.unshift('Draft complete. Finish your roster moves, then start the season.');}}
 function nextSeason(s,skipDraft=false){let earnedPick=draftOrder(s).findIndex(t=>t.id===0)+1,earnedExtra=s.extraPick;let t=s.teams[0];s.history.push({season:s.season,w:t.w,l:t.l,heat:s.heat});s.budget=80+t.w*2+s.bonus+Math.floor(s.fans/10);let carry=Math.min(10,s.cash);s.roster.forEach((p,i)=>{p.age++;p.years--;if(p.years<=0){p.salary=Math.max(3,Math.round((p.rating-45)/4));p.years=1;}if(p.age>29)p.rating=Math.max(40,p.rating-2);});s.cash=s.budget-s.roster.reduce((n,p)=>n+p.salary,0)+carry;while(s.cash<(skipDraft?0:6+(earnedExtra?3:0))){let p=[...s.roster].sort((a,b)=>b.salary-a.salary)[0],i=s.roster.indexOf(p);s.cash+=p.salary-2;s.roster[i]=player(s,i,45,true);s.roster[i].salary=2;s.log.unshift(`Budget cut: ${p.name} released for a low-cost replacement.`);}s.season++;s.week=0;s.phase='offseason';s.tradedThisSeason=false;s.bonus=0;s.extraPick=0;s.movedUp=false;s.movedDown=false;s.result=null;s.trained=[];s.teams.forEach(t=>{t.w=t.l=t.pf=t.pa=0;if(t.id)t.rating=clamp(t.rating+(t.mode==='Rebuilding'?3:-1)+rng(s)*2,50,90);});schedule(s);market(s);if(skipDraft)s.draftComplete=true;else prepareDraft(s,earnedPick,earnedExtra);s.log.unshift(`Season ${s.season}: $${s.budget}M funding; $${s.cash}M available after salaries and carryover.`);}
-root.Game={tradeDownOffer,moveDown,boardStatus,migrate,startDraft,startSeason,canManage,rookieReserve,spendable,scrutiny,weightedHeat,fresh,play,train,sign,trade,playoffs,review,draft,moveUp,units,standings,draftOrder,positions};if(typeof module!=='undefined')module.exports=root.Game;
+root.Game={canDraft,remainingPicks,tradeUpOffer,tradeDownOffer,moveDown,boardStatus,migrate,startDraft,startSeason,canManage,rookieReserve,spendable,scrutiny,weightedHeat,fresh,play,train,sign,trade,playoffs,review,draft,moveUp,units,standings,draftOrder,positions};if(typeof module!=='undefined')module.exports=root.Game;
 })(typeof window!=='undefined'?window:globalThis);
