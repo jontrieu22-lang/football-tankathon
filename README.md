@@ -35,3 +35,7 @@ New runs open in the season-one offseason with pick #3. Trades and free agency a
 First-year rookie salaries ($3M per selection) are reserved from discretionary spending and charged at selection. There is one veteran trade per season: before drafting its extra selection joins the current class, afterward it belongs to the next offseason. Training has two offseason slots and resets for Week 1.
 
 Existing saves retain progress. In-progress seasons finish normally. Older pending drafts finish before entering the next offseason with that draft marked complete. Existing week-zero seasons open the offseason; an already-funded/finished draft is not duplicated. A year-one save with enough unspent rookie funds gets the new initial draft; otherwise its prior spending is preserved and drafting begins next offseason.
+
+## Full draft board
+
+The Draft board tab shows all 44 prospects before and during the draft, with rank, position, overall, potential, current starter comparison, and availability. Trade up before entering the draft or before your first selection; the offer names the exact existing prospects it unlocks. Selecting players never removes them from the full board, while the selectable pool still shrinks as rivals pick between your selections. All remaining prospects can be selected, rather than only the first ten. Older saves retain their available prospects; missing historical ranks are filled once on migration without changing gameplay RNG.

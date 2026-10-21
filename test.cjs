@@ -45,3 +45,8 @@ for(const season of [1,2,3]){
 console.log(`PASS: smooth scrutiny landmarks, boundaries, fractional heat, ${losses} losses / ${wins} wins, trades and reviews`);
 
 s=regularFresh(2);delete s.flowVersion;s.cash=0;G.migrate(s);assert(s.draftComplete);assert.equal(s.cash,0);assert(G.startSeason(s));
+// Full board persists through scouting, trades, and every selection.
+s=G.fresh(63);assert.equal(s.draftBoard.length,44);assert.equal(s.draftBoard[0].rank,1);assert.equal(G.boardStatus(s,s.draftBoard[0]),'Requires earlier pick');let board=JSON.stringify(s.draftBoard),top=JSON.stringify(s.draftBoard[0]);cash=s.cash;assert(G.moveUp(s));assert.equal(s.phase,'offseason');assert.equal(s.cash,cash-12);assert.equal(s.pick,1);assert.equal(JSON.stringify(s.draftBoard),board);assert.equal(JSON.stringify(s.prospects[0]),top);assert(!G.moveUp(s));assert(G.startDraft(s));G.draft(s,1);assert.equal(s.draftBoard.length,44);assert.equal(G.boardStatus(s,s.draftBoard[0]),'Drafted by you');assert.equal(G.boardStatus(s,s.draftBoard[1]),'Taken by rival');cash=s.cash;G.draft(s,2);assert.equal(s.cash,cash);finishDraft(s);assert.equal(s.draftBoard.length,44);
+s=G.fresh(64);assert(G.startDraft(s));cash=s.cash;G.draft(s,1);assert.equal(s.cash,cash);assert.equal(s.draftTurn,0);G.draft(s,44);assert.equal(s.draftedRanks[0],44);
+s=G.fresh(65);delete s.draftBoard;delete s.draftedRanks;let available=JSON.stringify(s.prospects),rng=s.seed;G.migrate(s);assert.equal(s.draftBoard.length,44);assert.equal(JSON.stringify(s.prospects),available);assert.equal(s.seed,rng);board=JSON.stringify(s.draftBoard);G.migrate(s);assert.equal(JSON.stringify(s.draftBoard),board);
+console.log('PASS: all 44 prospects visible, stable trade-up targets, eligibility, taken/drafted statuses, old-save migration');
