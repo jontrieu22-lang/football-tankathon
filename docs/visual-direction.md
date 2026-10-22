@@ -1,6 +1,6 @@
 # Visual direction
 
-Hot Seat is a football front-office roguelike: build a champion before ownership fires you. Preserve the existing dark green dashboard, lime primary actions, condensed sports typography, and literal flaming chair until a visual PR explicitly proposes a new direction.
+Hot Seat is a football front-office roguelike: build a champion before ownership fires you. The Tankathon UI uses an old-school football coach’s chalkboard: textured green slate, warm white chalk outlines, yellow action accents, wood trim, and X/O route diagrams. Keep dense management data readable with bundled fonts and preserve the literal hot-seat illustration. The theme lives in `dist/styles/chalkboard.css`; the slate texture and play diagram are local SVG assets.
 
 ## Editing boundaries
 
@@ -9,6 +9,7 @@ Hot Seat is a football front-office roguelike: build a champion before ownership
 - `dist/js/ui/components/`: shared presentation, including the hot seat, result report, buttons, and page layout.
 - `dist/js/ui/app.js`: browser state, persistence, navigation, and action dispatch. Coordinate edits here because screens share it.
 - `dist/js/ui/format.js`: small shared DOM/formatting helpers.
+- `dist/styles/chalkboard.css`: chalkboard theme and responsive visual overrides.
 - `dist/styles/tokens.css`: font declarations and palette variables.
 - `dist/styles/base.css`: element defaults, buttons, and interaction states.
 - `dist/styles/components.css`: component styling and desktop layouts.

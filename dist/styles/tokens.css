@@ -11,11 +11,11 @@
   font-display: swap;
 }
 :root {
-  --bg: #101717;
-  --panel: #192222;
-  --line: #303b39;
-  --text: #edece2;
-  --muted: #92a09a;
-  --lime: #d8ee88;
-  --orange: #f29a60;
+  --bg: #102b25;
+  --panel: #16352d;
+  --line: #718278;
+  --text: #f3efdc;
+  --muted: #c0c9b9;
+  --lime: #f0d96d;
+  --orange: #efa58a;
 }
