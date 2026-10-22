@@ -8,7 +8,6 @@ body {
 }
 header { background: #102b2555; border-bottom: 2px solid var(--line); }
 .brand { letter-spacing: 2px; }
-.brand-mark { background: transparent; color: var(--lime); border: 2px solid var(--lime); border-radius: 45% 48% 42% 50%; transform: rotate(-7deg); padding: 3px 8px; }
 h1, h2, h3, .brand, .stats strong, .season b, .plan b { text-shadow: .5px 1px 0 #f3efdc30; }
 h1 { letter-spacing: 1px; }
 .title-row { margin-bottom: 18px; }
@@ -35,7 +34,6 @@ nav button.active { border-bottom: 3px solid var(--lime); }
 .team-logo, .team-logo.rival { background: transparent; color: var(--text); clip-path: none; border: 2px solid currentColor; border-radius: 48% 44% 50% 46%; }
 .team-logo.hounds { color: var(--lime); transform: rotate(-5deg); }
 .seat { background: radial-gradient(ellipse at 50% 35%, #efdb7a0c, transparent 70%); }
-.seat svg { filter: saturate(.55); }
 .heat-track, .mini-track { background: #c0c9b922; border-radius: 0; }
 .mini-track span { background: #b6d5b9; }
 footer { color: var(--muted); border-top: 2px solid var(--line); }
@@ -44,7 +42,8 @@ dialog { background: var(--bg) url('../assets/slate-grain.svg'); border: 3px dou
   body { border-width: 6px; }
   header { padding-inline: 14px; }
   .brand { font-size: 22px; gap: 8px; letter-spacing: 1px; }
-  .brand-mark { display: none; }
+  .brand-mark { padding: 3px 6px; font-size: 20px; }
+  .brand-mark span { font-size: 13px; }
   .chalk-play img { height: 105px; object-fit: cover; object-position: left; }
   .chalk-play > span { position: static; display: block; padding: 0 12px 12px; text-align: right; font-size: 13px; letter-spacing: 2px; transform: none; }
   .season { letter-spacing: 1px; }
