@@ -1,0 +1,52 @@
+/* The coach's board: lightweight, local textures over live HTML controls. */
+body {
+  min-height: 100vh;
+  border: 10px solid #80603c;
+  border-image: repeating-linear-gradient(8deg, #49351f, #a9804c 3px, #6f4d2e 6px, #b18b57 9px) 10;
+  background-image: url('../assets/slate-grain.svg'), radial-gradient(ellipse at 25% 10%, #42605266, transparent 55%), radial-gradient(ellipse at 80% 65%, #58736133, transparent 50%);
+  box-shadow: inset 0 0 32px #0008;
+}
+header { background: #102b2555; border-bottom: 2px solid var(--line); }
+.brand { letter-spacing: 2px; }
+h1, h2, h3, .brand, .stats strong, .season b, .plan b { text-shadow: .5px 1px 0 #f3efdc30; }
+h1 { letter-spacing: 1px; }
+.title-row { margin-bottom: 18px; }
+.chalk-play { position: relative; margin: 0 0 24px; border-block: 1px solid #c0c9b94d; }
+.chalk-play img { display: block; width: 100%; height: auto; object-fit: contain; }
+.chalk-play > span { position: absolute; right: 4%; top: 43%; font: 600 22px 'Barlow Condensed', sans-serif; letter-spacing: 3px; color: var(--lime); transform: rotate(-4deg); }
+.stats, .panel { background: #102b254d; border: 2px solid var(--line); border-radius: 3px 7px 4px 6px; box-shadow: 1px 2px 0 #e8ecda15, inset 0 0 28px #091d1826; }
+.stats { border-color: #b0b9a5; }
+.stats strong { color: var(--text); }
+.stats strong i, .vs { color: var(--muted); }
+.panel-label, label { color: var(--text); }
+button, .trade-picker select { border-width: 2px; border-radius: 3px 6px 3px 5px; background: #102b2566; }
+button:hover:not(:disabled) { background: #c0c9b91a; }
+button:disabled { opacity: .5; }
+.primary { background: #f0d96d12; color: var(--lime); border-color: var(--lime); box-shadow: inset 0 0 0 1px #f0d96d25; }
+.primary:hover:not(:disabled) { background: #f0d96d28; }
+button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px dashed var(--lime); outline-offset: 4px; }
+nav { border-bottom: 2px solid var(--line); }
+nav button { border-radius: 0; background: transparent; }
+nav button.active { border-bottom: 3px solid var(--lime); }
+.plan.selected, tr.you, .draft-board .on-clock { background: #f0d96d12; }
+.plan.selected { box-shadow: inset 0 0 0 1px #f0d96d50; }
+.position, .match-note, .trade-offer, .notice { background: #f0d96d09; border: 1px solid #b5bd9770; border-radius: 3px; }
+.team-logo, .team-logo.rival { background: transparent; color: var(--text); clip-path: none; border: 2px solid currentColor; border-radius: 48% 44% 50% 46%; }
+.team-logo.hounds { color: var(--lime); transform: rotate(-5deg); }
+.seat { background: radial-gradient(ellipse at 50% 35%, #efdb7a0c, transparent 70%); }
+.heat-track, .mini-track { background: #c0c9b922; border-radius: 0; }
+.mini-track span { background: #b6d5b9; }
+footer { color: var(--muted); border-top: 2px solid var(--line); }
+dialog { background: var(--bg) url('../assets/slate-grain.svg'); border: 3px double var(--muted); border-radius: 4px; }
+@media (max-width: 760px) {
+  body { border-width: 6px; }
+  header { padding-inline: 14px; }
+  .brand { font-size: 22px; gap: 8px; letter-spacing: 1px; }
+  .brand-mark { padding: 3px 6px; font-size: 20px; }
+  .brand-mark span { font-size: 13px; }
+  .chalk-play img { height: 105px; object-fit: cover; object-position: left; }
+  .chalk-play > span { position: static; display: block; padding: 0 12px 12px; text-align: right; font-size: 13px; letter-spacing: 2px; transform: none; }
+  .season { letter-spacing: 1px; }
+  .action-row { flex-wrap: wrap; }
+  aside { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+}
