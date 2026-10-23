@@ -23,6 +23,12 @@ document.addEventListener("click", (e) => {
   const b = e.target.closest("[data-action]");
   if (!b) return;
   let [a, v] = b.dataset.action.split(":");
+  if (a === "selectPick") {
+    selectedTradePick = Number(v);
+    render();
+    document.querySelector(`[data-action="selectPick:${selectedTradePick}"]`)?.focus();
+    return;
+  }
   notice = "";
   if (a === "help") {
     $("#help").showModal();
@@ -79,10 +85,3 @@ document.addEventListener("click", (e) => {
 });
 save();
 render();
-
-document.addEventListener("change", (e) => {
-  if (e.target.id === "trade-pick") {
-    selectedTradePick = Number(e.target.value);
-    render();
-  }
-});
