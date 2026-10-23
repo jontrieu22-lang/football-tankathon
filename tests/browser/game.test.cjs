@@ -193,14 +193,17 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
       save();
       render();
     });
-    await page.locator("#trade-pick").selectOption("19");
+    await page.locator('[data-action="selectPick:19"]').click();
+    assert.equal(await page.locator('[data-action="selectPick:19"]').getAttribute("aria-pressed"), "true");
+    assert.equal(await page.locator('[data-action="selectPick:3"]').getAttribute("aria-pressed"), "false");
+    assert.match(await page.locator(".offers-heading").innerText(), /Offers for pick #19/);
     assert(
       (await page.locator(".trade-down").innerText()).includes(
         "#19 → #23 + #39",
       ),
     );
     await page.locator('[data-action="moveDown:19"]').click();
-    await page.locator("#trade-pick").selectOption("23");
+    await page.locator('[data-action="selectPick:23"]').click();
     await page.locator('[data-action="moveDown:23"]').click();
     await page.reload();
     await page
@@ -214,10 +217,10 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
     await page.locator('[data-action="startDraft"]').click();
     await page.locator('[data-action="draft:3"]').click();
     assert.equal(
-      await page.locator('#trade-pick option[value="3"]').count(),
+      await page.locator('[data-action="selectPick:3"]').count(),
       0,
     );
-    await page.locator("#trade-pick").selectOption("39");
+    await page.locator('[data-action="selectPick:39"]').click();
     await page.locator('[data-action="moveUp:39"]').click();
     assert((await page.locator(".draft-board").innerText()).includes("#37"));
     while (await page.locator('[data-action^="draft:"]:enabled').count())
