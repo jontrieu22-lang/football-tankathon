@@ -265,3 +265,13 @@
   font-size: 12px;
   margin-bottom: 0;
 }
+
+@media (max-width: 1000px) {
+  .title-row { grid-template-columns: minmax(0, 1fr) 260px auto; gap: 16px; }
+}
+@media (max-width: 760px) {
+  .title-row { grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
+  .title-row > .title-seat { grid-column: 1 / -1; grid-row: 2; width: 100%; max-width: 360px; justify-self: center; }
+  .title-row > .season { grid-column: 2; grid-row: 1; }
+  .title-row .title-seat p { max-width: none; }
+}

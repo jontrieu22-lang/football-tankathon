@@ -58,8 +58,9 @@ main {
   padding: 36px 48px 20px;
 }
 .title-row {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px minmax(0, 1fr);
+  gap: 24px;
   align-items: center;
   margin-bottom: 30px;
 }
@@ -679,3 +680,12 @@ dialog p {
     transition: none !important;
   }
 }
+
+/* Keep the hot seat central to the team identity on every screen. */
+.title-row > .season { justify-self: end; }
+.title-row > .title-seat { margin: 0; padding: 16px 20px; text-align: center; }
+.title-seat svg { height: 110px; margin: 0; }
+.title-seat .panel-label { justify-content: center; gap: 12px; }
+.title-seat .heat-number { font-size: 30px; }
+.title-row .title-seat p { margin: 8px 0 0; font-size: 11px; }
+.owner-review .review-note { border: 0; margin: 0; padding: 0; }
